@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Login
+  </title>
+  <!--<base href="http://maisvendasapi.com:8080/api/" />-->
+  <link rel='stylesheet prefetch' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:600'>
+  <link rel="stylesheet" type='text/css' href="assets/css/login.css">
+  <link rel="stylesheet" type='text/css' href="assets/css/bootstrap.css">
+  
+  <script type="text/javascript" src="assets/js/jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="assets/js/myCookie.js"></script>
+  <script type="text/javascript" src="assets/js/login.js"></script>
+  <script type="text/javascript" src="assets/js/bootbox.js"></script>
+  <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+  <script type="text/javascript" src="assets/js/md5.js"></script>
+  
+</head>
+
+<body>
+  <div class="login-wrap">
+	<div class="login-html">
+		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Logar</label>
+		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"><!--Cadastrar--></label>
+		<div class="login-form">
+			<div class="sign-in-htm">
+				<div class="group">
+					<label for="user" class="label">Email</label>
+					<input id="user" type="text" class="input">
+				</div>
+				<div class="group">
+					<label for="pass" class="label">Senha</label>
+					<input id="pass" type="password" class="input" data-type="password">
+				</div>
+				<div class="group">
+					<input id="mantem" type="checkbox" class="check" checked>
+					<label for="mantem"><span class="icon"></span> Manter-me Conectado</label>
+				</div>
+				<div class="group">
+					<input id="btn-login" type="submit" class="button" value="Logar">
+				</div>
+				<div class="hr"></div>
+				<div class="foot-lnk">
+					<a href="#forgot">Esqueceu a Senha?</a>
+				</div>
+			</div>
+			<div class="sign-up-htm">
+				<div class="group">
+					<label for="name" class="label">Nome</label>
+					<input id="name" type="text" class="input">
+				</div>
+				<div class="group">
+					<label for="lastname" class="label">Sobrenome</label>
+					<input id="lastname" type="text" class="input">
+				</div>
+				<div class="group">
+					<label for="pass-cad" class="label">Senha</label>
+					<input id="pass-cad" type="password" class="input" data-type="password">
+				</div>
+				<div class="group">
+					<label for="conf-pass" class="label">Confirmar Senha</label>
+					<input id="conf-pass" type="password" class="input" data-type="password">
+				</div>
+				<div class="group">
+					<label for="email" class="label">Email</label>
+					<input id="email" type="text" class="input">
+				</div>
+				<div class="group">
+					<input id="btn-cadastro" type="submit" class="button" value="Cadastrar">
+				</div>
+				<div class="hr"></div>
+				<div class="foot-lnk">
+					<label for="tab-1">Já é membro?</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+  
+  
+</body>
+</html>

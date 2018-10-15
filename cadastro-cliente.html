@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		
+		<script src="assets/js/cadastro-cliente.js" type="text/javascript"></script>
+
+	</head>
+
+<body>
+    <div id="wrapper">
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2><div id="btn-voltar">< Clientes</div></h2>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Form Elements -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Cadastro de Clientes
+                            </div>
+                            <div class="panel-body">
+								<form role="form">
+									<div class="form-group">
+										<label class="checkbox-inline">
+											<input type="checkbox" id="ativo"/> Ativo
+										</label	
+									</div>
+								</form>
+								<!--Somente para quebrar uma linha entre o campo de ativo e os demais campos-->
+								<div class="row">
+									</br> 
+								</div>
+                                <div class="row">
+                                    <div class="col-md-6">
+										
+                                        <form role="form">
+											<div class="form-group">
+                                                <label>Código*</label>
+                                                <input class="form-control" id="cod"/>
+                                            </div>
+						
+                                            <div class="form-group">
+                                                <label>Razão Social*</label>
+                                                <input class="form-control" id="raz-social"/>
+                                            </div>
+											<div class="form-group">
+                                                <label>Nome Fantasia</label>
+                                                <input class="form-control" id="nome-fantasia" />
+                                            </div>
+											<div class="form-group">
+                                                <label>CNPJ*</label>
+                                                <input class="form-control" id="cnpj" />
+                                            </div>
+											<div class="form-group">
+                                                <label>Inscrição Estadual</label>
+                                                <input class="form-control" id="insc-estadual" />
+                                            </div>
+											<div class="form-group">
+                                                <label>Email*</label>
+                                                <input class="form-control" id="email" />
+                                            </div>
+											<div class="form-group">
+                                                <label>Fone*</label>
+                                                <input class="form-control" id="fone" />
+                                            </div>
+                                            
+                                        </form>
+                                        
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>CEP*</label>
+                                                <input class="form-control" id="cep" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Estado*</label>
+                                                <select class="form-control" id="estado">
+                                                    <option>Selecione</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Cidade*</label>
+                                                <select class="form-control" id="cidade">
+                                                    <option>Selecione</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Bairro*</label>
+                                                <input class="form-control" id="bairro" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Logradouro*</label>
+                                                <input class="form-control" id="logradouro" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Número*</label>
+                                                <input class="form-control" id="numero" />
+                                            </div>
+                                            <input type="hidden" id="dtCadastro" value="">
+                                        </form>
+                                    </div>
+                            </div>
+                        </div>
+                        <!-- End Form Elements -->
+                    </div>
+                </div>
+            </div>
+			<!-- /. ROW  -->
+			<div class="row">
+				<div class="col-md-12-cadastro-cli">
+					<button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
+				</div>
+			</div>
+			<!-- /. ROW  -->
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+
+</body>
+
+</html>

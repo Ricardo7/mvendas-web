@@ -1,9 +1,10 @@
-﻿var baseUrl = "http://192.168.15.4:8080";
+﻿var baseUrl = "http://192.168.15.10:8080";
 var clienteId = 0;
 ready();
 
 //$(document).ready(function(){
-function ready(){
+function ready() {
+
     /*
     var qs = (function (a) {
         if (a == "") return {};
@@ -408,8 +409,10 @@ function buscaCidade(cidadeId){
 	
 }
 
-function montaObjeto(response){
-	var cidade = response.data;
+function montaObjeto(response) {
+    var cidade = new Object();
+	cidade = response.data;
+    
 	var ativo;
 	
 	if ($("#ativo").is(":checked")){
@@ -446,30 +449,10 @@ function montaObjeto(response){
 	cliente.Numero = $("#numero").val();
 	cliente.Status = 1;
 	cliente.Ativo = ativo;
-	cliente.DtAtualizacao = dataAtual;
+    cliente.DtAtualizacao = dataAtual;
     cliente.Cidade = cidade;
     cliente.SegmentoMercado = null;
     
-    /*
-    var cliente = ' {"IDAP":"' + "0"
-        + ',"IDWS":"' + clienteId
-        + ',"Cod":"' + $("#cod").val().toString()
-        + '","Cnpj":"' + removeCaracteres($("#cnpj").val().toString())
-        + '","RazaoSocial":"' + $("#raz-social").val().toString()
-        + '","NomeFantasia":"' + $("#nome-fantasia").val().toString()
-        + '","InscricaoEstadual":"' + $("#insc-estadual").val().toString()
-        + '","Email":"' + $("#email").val().toString()
-        + '","Fone":"' + removeCaracteres($("#fone").val())
-        + '","Cep":"' + removeCaracteres($("#cep").val())
-        + '","Bairro":"' + $("#bairro").val().toString()
-        + '","Logradouro":"' + $("#logradouro").val().toString()
-        + '","Numero":"' + $("#numero").val()
-        + '","Status":"' + "1"
-        + ',"Ativo":"' + ativo
-        + ',"DtCadastro":"' + dataAtual
-        + ',"DtAtualizacao":"' + dataAtual
-        + ' }';
-       */
     if (clienteId == "0") {
         //Se cliente ainda não existe irá inserir
         enviarDados(cliente, baseUrl + "/api/Cliente/AddCliente", "POST");
@@ -480,22 +463,26 @@ function montaObjeto(response){
 						
 }
 
-function enviarDados(dados,url,metodo){
-    bootbox.alert(JSON.stringify(dados));
+function enviarDados(dados,urlDest,metodo){
+    var acao;
+    if (metodo == "POST") {
+        acao = "inserido";
+    } else {
+        acao = "atualizado";
+    }
+
     $.ajax({
-        type:metodo,
-        url:url,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        dataType:"json",
-        data:JSON.stringify(dados),
+        url: urlDest,
+        type: metodo,
+        data: JSON.stringify(dados),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
 		success: function(data)
 		{
 			//var response = $.parseJSON(data);
 			//bootbox.alert(response.message);
 			if (data.status == "SUCCESS"){
-                bootbox.alert("Cliente inserido com sucesso.");
+                bootbox.alert("Cliente "+acao+" com sucesso.");
                 $(".content").attr("id", "0");
 				$(".content").load('clientes.html');
 				//$(window.document.location).attr('href',novaURL);
@@ -504,6 +491,6 @@ function enviarDados(dados,url,metodo){
 		error: function (data, status, errorThrown) {
             bootbox.alert("Erro: " + JSON.stringify(data));
         }
-	});	
+	});
 	
 }

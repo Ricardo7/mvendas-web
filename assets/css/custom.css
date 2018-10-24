@@ -388,7 +388,65 @@ background-color: #FFF;
    
 }
 
+ /*Botão adiconal*/
 .dt-head-center {
     text-align: center;
 }
 
+.btn-cancel {
+    color: #fff;
+    background-color: #848484;
+    border-color: #424242;
+}
+
+    .btn-cancel:hover,
+    .btn-cancel:focus,
+    .btn-cancel:active,
+    .btn-cancel.active,
+    .open .dropdown-toggle.btn-cancel {
+        color: #fff;
+        background-color: #6E6E6E;
+        border-color: #1C1C1C;
+    }
+
+    .btn-cancel:active,
+    .btn-cancel.active,
+    .open .dropdown-toggle.btn-cancel {
+        background-image: none;
+    }
+
+    .btn-cancel.disabled,
+    .btn-cancel[disabled],
+    fieldset[disabled] .btn-cancel,
+    .btn-cancel.disabled:hover,
+    .btn-cancel[disabled]:hover,
+    fieldset[disabled] .btn-cancel:hover,
+    .btn-cancel.disabled:focus,
+    .btn-cancel[disabled]:focus,
+    fieldset[disabled] .btn-cancel:focus,
+    .btn-cancel.disabled:active,
+    .btn-cancel[disabled]:active,
+    fieldset[disabled] .btn-cancel:active,
+    .btn-cancel.disabled.active,
+    .btn-cancel[disabled].active,
+    fieldset[disabled] .btn-cancel.active {
+        background-color: #f0ad4e;
+        border-color: #eea236;
+    }
+
+    .btn-cancel .badge {
+        color: #f0ad4e;
+        background-color: #fff;
+    }
+/*/Botão adiconal*/
+.itens-pedido{
+    padding:10px;
+}
+
+#lb-vlr-total-desc, #vlr-total-desc{
+    color: #208103;
+}
+
+#lb-vlr-total, #vlr-total {
+    color: #0712e2;
+}

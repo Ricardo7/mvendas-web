@@ -1,4 +1,4 @@
-var urlBase = "http://192.168.15.4:8080";
+var urlBase = "http://192.168.15.10:8080/api";
 
 ready();
 
@@ -13,6 +13,13 @@ function ready(){
 
     $("#usuarios-btn-novo").click(function () {
         $(".content").load('cadastro-usuario.html');
+        $(".content").attr("id", "0");
+    });
+
+    $("#dataTables-example").on("click", ".btn-warning", function () {
+        $(".content").load("cadastro-usuario.html");
+        var id = $(this).attr("id");
+        $(".content").attr("id", id);
     });
 	
 }
@@ -22,7 +29,7 @@ function carregarDados(response){
 	
 	$.ajax({
 		type: "GET",
-        url: urlBase+"/api/Usuario/ListaUsuarios",
+        url: urlBase+"/Usuario/ListaUsuarios",
 		//data: {conceitoId:1},
 		/*beforeSend: function(xhr){
 			xhr.setRequestHeader('X-Auth-Token', token);
@@ -59,8 +66,8 @@ function populaUsuariosTela(response){
 		$.each(clientes, function(index,data){
 			dataSet.push([data.Nome,
                           data.Email,
-                          data.Email,
-						  data.Ativo
+                          data.Ativo,
+                          data.IDWS
 						]);
 		});
 		
@@ -69,8 +76,7 @@ function populaUsuariosTela(response){
 		  columns: [
 			{ title: 'Nome' },
               { title: 'E-mail' },
-              { title: 'Perfil' },
-			{ title: 'Situação',
+			  { title: 'Situação',
 				render: function(data, type, full) {
 					if (data == "0") {
 						return "Inativo";
@@ -79,7 +85,18 @@ function populaUsuariosTela(response){
 					}
 					
 				}
-			}
+              },
+              {
+                  title: "",
+                  width: "12%",
+                  className: "dt-head-center",
+                  render: function (data, type, full) {
+                      var acoes;
+                      acoes = "<button type='button' class='btn btn-warning btn-xs' id='" + data + "'>Editar</button >&nbsp";
+                      //editar = "<a href='#' id='" + data + "' class='btn btn-primary'>Editar</a>";
+                      return acoes;
+                  }
+              }
 		  ]
 		});	
 		

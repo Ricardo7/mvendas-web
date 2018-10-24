@@ -1,10 +1,22 @@
-var baseUrl = "http://192.168.15.4:8080";
+var baseUrl = "http://192.168.15.10:8080";
+var usuarioId = 0;
 ready();
 
 //$(document).ready(function(){
-function ready(){
+function ready() {
 
-	$("#btn-voltar").click(function(){
+    usuarioId = $(".content").attr("id");
+
+    //Se o ID estiver populado é porque o registro já existe e, neste caso, deve ser alterado.
+    if (usuarioId != "0") {
+        myUrl = baseUrl + "/api/Usuario/GetUsuario?id=" + usuarioId;
+        carregarDados(function (response) {
+            populaCamposTela(response);
+        }, myUrl);
+    }
+
+    $("#btn-voltar").click(function () {
+        $(".content").attr("id", "0");
 		$(".content").load('usuarios.html');
 	});
 	
@@ -55,6 +67,26 @@ function carregarDados(response,myUrl){
 
 	});
 	
+}
+
+function populaCamposTela(response) {
+    if (response != null) {
+
+        var dados = response.data;
+
+        if (dados.Ativo == 1) {
+            $("#ativo").prop("checked", true);
+        } else {
+            $("#ativo").prop("checked", false);
+        }
+
+        $("#nome").val(dados.Nome);
+        $("#email").val(dados.Email);
+        $("#senha").val(dados.Senha);
+        $("#dtCadastro").val(dados.DtCadastro);
+
+
+    }
 }
 
 function validaCampos(){
@@ -115,34 +147,53 @@ function montaObjeto(){
 	// Formata a data e a hora (note o mês + 1)
 	var dataAtual = data.getFullYear() + '-' + (data.getMonth()+1) + '-' + data.getDate() +' '+ data.getHours() + ':' + data.getMinutes() + ':' + data.getSeconds();
 				
-	var cliente = new Object();
-	cliente.IDAP = 0;
-	cliente.IDWS = "0";
-	cliente.Nome = $("#nome").val().toString();
-	cliente.Email = $("#email").val().toString();
-    cliente.Senha = senhaCript;
-	cliente.Ativo = ativo;
-	cliente.DtCadastro = dataAtual;
-	cliente.DtAtualizacao = dataAtual;
+    var usuario = new Object();
 
-	alert(JSON.stringify(cliente));
+    if (usuarioId != "0") {
+        usuario.IDWS = usuarioId;
+        usuario.DtCadastro = $("#dtCadastro").val();
+    } else {
+        usuario.IDWS = "0";
+        usuario.DtCadastro = dataAtual;
+    }
 
-	enviarDados(cliente);
+	usuario.IDAP = 0;
+	usuario.Nome = $("#nome").val().toString();
+	usuario.Email = $("#email").val().toString();
+    usuario.Senha = senhaCript;
+	usuario.Ativo = ativo;
+	usuario.DtAtualizacao = dataAtual;
+
+    if (usuarioId == "0") {
+        //Se Usuário ainda não existe irá inserir
+        enviarDados(usuario, baseUrl + "/api/Usuario/AddUsuario", "POST");
+    } else {
+        //Se Usuário já existe irá atualizar
+        enviarDados(usuario, baseUrl + "/api/Usuario/EditUsuario", "PUT");
+    }
 						
 }
 
-function enviarDados(data){
-	
-	$.ajax({
-		type: "POST",
-        url: baseUrl +"api/Usuario/AddUsuario",
-		data: data,
+function enviarDados(dados,url,metodo){
+    var acao;
+    if (metodo == "POST") {
+        acao = "inserido";
+    } else {
+        acao = "atualizado";
+    }
+
+    $.ajax({
+		type: metodo,
+        url: url,
+        data: JSON.stringify(dados),
+        dataType: "json",
+        contentType: "application/json",
 		success: function( data)
 		{
 			//var response = $.parseJSON(data);
 			//bootbox.alert(response.message);
 			if (data.status == "SUCCESS"){
-				bootbox.alert("Usuário inserido com sucesso.");
+                bootbox.alert("Usuário " + acao + " com sucesso.");
 				$(".content").load('usuarios.html');
 				//$(window.document.location).attr('href',novaURL);
 			}

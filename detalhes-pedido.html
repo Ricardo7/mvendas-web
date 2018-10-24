@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <script src="assets/js/detalhes-pedido.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2><class id="btn-voltar">< Detalhes de Pedidos</class></h2>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Form Elements -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Detalhes de Pedidos
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <form role="form">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Número</label><br>
+                                                    <span id="numero"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Dt. Emissão</label><br>
+                                                    <span id="dt-emissao"></span>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Cliente</label><br>
+                                                    <span id="cliente"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Condição de Pagamento</label><br>
+                                                    <span id="cond-pgto"></span>
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Situação</label><br>
+                                                <span id="situacao">Pendente</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>CNPJ</label><br>
+                                                <span id="cnpj"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Tabela de Preços</label><br>
+                                                <span id="tabela-precos"></span>
+                                            </div>
+                                            <input type="hidden" id="dtCadastro" value="">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="itens-pedido">
+                                <div class="col-md-12-cadastro-cli">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-hover" id="dataTables-example">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Código</th>
+                                                                <th>Descrição</th>
+                                                                <th>Quantidade</th>
+                                                                <th>Vlr. Unitário</th>
+                                                                <th>Vlr. Desconto</th>
+                                                                <th>Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                    </div>
+                                    <div class="col-md-6">
+                                            <div class="col-md-6">
+                                                <label id="lb-vlr-total-desc">Descontos</label><br>
+                                                <span id="vlr-total-desc"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label id="lb-vlr-total">Total</label><br>
+                                                <span id="vlr-total"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- End Form Elements -->
+                        </div>
+                    </div>
+                    
+                </div>
+                    <!-- /. ROW  -->
+                    <div class="row">
+                        <div class="col-md-12-cadastro-cli">
+                            <button type="submit" class="btn btn-cancel btn-sm" id="cancelar">Cancelar</button>
+                            <button type="submit" class="btn btn-danger btn-sm" id="bloquear">Bloquear</button>
+                            <button type="submit" class="btn btn-success btn-sm" id="aprovar">Aprovar</button>
+                        </div>
+                    </div>
+                    <!-- /. ROW  -->
+                    <!-- /. PAGE INNER  -->
+                </div>
+            <!-- /. PAGE WRAPPER  -->
+        </div>
+        <!-- /. WRAPPER  -->
+    </div>
+</body>
+</html>

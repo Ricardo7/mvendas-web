@@ -1,5 +1,5 @@
 var token;
-var urlBase = "http://192.168.15.4:8080";
+var urlBase = "http://192.168.15.10:8080/api";
 
 ready();
 
@@ -36,7 +36,7 @@ function carregarDados(response) {
 
     $.ajax({
         type: "GET",
-        url: urlBase + "/api/Cliente/GetListaClientes",
+        url: urlBase + "/Cliente/GetListaClientes",
         //data: {conceitoId:1},
 		/*beforeSend: function(xhr){
 			xhr.setRequestHeader('X-Auth-Token', token);
@@ -115,13 +115,12 @@ function populaClientesTela(response) {
                     }
                 },
                 {
-                    title: 'Ações',
+                    title: "",
                     width: "12%",
                     className: "dt-head-center",
                     render: function (data, type, full) {
                         var acoes;
                         acoes = "<button type='button' class='btn btn-warning btn-xs' id='" + data + "'>Editar</button >&nbsp";
-                        acoes = acoes + "<button type='button' class='btn btn-danger btn-xs' id='" + data + "'>Excluir</button >";
                         //editar = "<a href='#' id='" + data + "' class='btn btn-primary'>Editar</a>";
                         return acoes;
                     }

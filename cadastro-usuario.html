@@ -15,7 +15,7 @@
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2><div id="btn-voltar">< Usuário</div></h2>
+                        <h2><class id="btn-voltar">< Usuário</class></h2>
                     </div>
                 </div>
                 <!-- /. ROW  -->
@@ -28,20 +28,20 @@
                                 Cadastro de Usuário
                             </div>
                             <div class="panel-body">
-								<form role="form">
-									<div class="form-group">
-										<label class="checkbox-inline">
-											<input type="checkbox" id="ativo"/> Ativo
-										</label	
-									</div>
-								</form>
-								<!--Somente para quebrar uma linha entre o campo de ativo e os demais campos-->
-								<div class="row">
-									</br> 
-								</div>
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="ativo" /> Ativo
+                                        </label>
+                                    </div>
+                                </form>
+                                <!--Somente para quebrar uma linha entre o campo de ativo e os demais campos-->
+                                <div class="row">
+                                    </br>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-6">
-										
+
                                         <form role="form">
 
                                             <div class="form-group">
@@ -54,30 +54,31 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Senha*</label>
-                                                <input class="form-control" id="senha" />
+                                                <input type="password" class="form-control" id="senha" />
                                             </div>
                                             <!--
-                                            <div class="form-group">
-                                                <label>Perfil*</label>
-                                                <select class="form-control" id="perfil">
-                                                    <option>Selecione</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Usuário Superior*</label>
-                                                <select class="form-control" id="usuario-superior">
-                                                    <option>Selecione</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Região*</label>
-                                                <select class="form-control" id="regiao">
-                                                    <option>Selecione</option>
-                                                </select>
-                                            </div>
-                                            -->
+                                <div class="form-group">
+                                    <label>Perfil*</label>
+                                    <select class="form-control" id="perfil">
+                                        <option>Selecione</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Usuário Superior*</label>
+                                    <select class="form-control" id="usuario-superior">
+                                        <option>Selecione</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Região*</label>
+                                    <select class="form-control" id="regiao">
+                                        <option>Selecione</option>
+                                    </select>
+                                </div>
+                                -->
+                                            <input type="hidden" id="dtCadastro" value="">
                                         </form>
-                                        
+
                                     </div>
 
                                 </div>
@@ -86,13 +87,14 @@
                         <!-- End Form Elements -->
                     </div>
                 </div>
+
+                <!-- /. ROW  -->
+                <div class="row">
+                    <div class="col-md-12-cadastro-cli">
+                        <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
+                    </div>
+                </div>
             </div>
-			<!-- /. ROW  -->
-			<div class="row">
-				<div class="col-md-12-cadastro-cli">
-					<button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
-				</div>
-			</div>
 			<!-- /. ROW  -->
             <!-- /. PAGE INNER  -->
         </div>

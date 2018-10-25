@@ -1,4 +1,4 @@
-var baseUrl = "http://192.168.15.10:8080";
+var baseUrl = "http://192.168.43.67:8080/api";
 var usuarioId = 0;
 ready();
 
@@ -9,7 +9,7 @@ function ready() {
 
     //Se o ID estiver populado é porque o registro já existe e, neste caso, deve ser alterado.
     if (usuarioId != "0") {
-        myUrl = baseUrl + "/api/Usuario/GetUsuario?id=" + usuarioId;
+        myUrl = baseUrl + "/Usuario/GetUsuarioID?id=" + usuarioId;
         carregarDados(function (response) {
             populaCamposTela(response);
         }, myUrl);
@@ -82,7 +82,7 @@ function populaCamposTela(response) {
 
         $("#nome").val(dados.Nome);
         $("#email").val(dados.Email);
-        $("#senha").val(dados.Senha);
+        $("#senha").val();
         $("#dtCadastro").val(dados.DtCadastro);
 
 
@@ -166,10 +166,10 @@ function montaObjeto(){
 
     if (usuarioId == "0") {
         //Se Usuário ainda não existe irá inserir
-        enviarDados(usuario, baseUrl + "/api/Usuario/AddUsuario", "POST");
+        enviarDados(usuario, baseUrl + "/Usuario/AddUsuario", "POST");
     } else {
         //Se Usuário já existe irá atualizar
-        enviarDados(usuario, baseUrl + "/api/Usuario/EditUsuario", "PUT");
+        enviarDados(usuario, baseUrl + "/Usuario/EditUsuario", "PUT");
     }
 						
 }

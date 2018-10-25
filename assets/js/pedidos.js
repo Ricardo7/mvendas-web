@@ -1,4 +1,4 @@
-var urlBase = "http://192.168.15.10:8080/api";
+var urlBase = "http://192.168.43.67:8080/api";
 
 ready();
 
@@ -97,7 +97,7 @@ function populaDadosTela(response) {
 
 			dataSet.push([data.Numero,
                 data.Cliente.Cod+" - "+data.Cliente.RazaoSocial,
-                vlrTotal,
+                vlrTotal.toFixed(2),
                 data.Situacao,
                 data.IDWS
 						]);
@@ -150,6 +150,7 @@ function populaDadosTela(response) {
 		  ]
         });
 
+        /*
         var table = $("#dataTables-example").DataTable();
         
         $('#dataTables-example tbody').on('click', 'td', function () {
@@ -160,7 +161,7 @@ function populaDadosTela(response) {
             
 
         });
-		
+		*/
 		
 	}
 	

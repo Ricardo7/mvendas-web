@@ -1,4 +1,4 @@
-var urlBase = "http://192.168.43.67:8080/api";
+var urlBase = "http://192.168.0.110:8080/api";
 
 ready();
 

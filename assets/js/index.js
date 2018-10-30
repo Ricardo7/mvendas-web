@@ -24,7 +24,7 @@ $(document).ready(function () {
 	$("#menu-config").click(function(){
 		limpaMenuAtivo();
 		$("#menu-config").attr('class', 'active-menu');
-		$(".content").load('clientes.html');
+		$(".content").load('configs.html');
 	});
 	
 	

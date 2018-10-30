@@ -1,7 +1,7 @@
 	//var token = $.cookie("token");
 	var token = getCookie("token");
 	var novaURL = "index.html";
-    var baseURL = "http://192.168.43.67:8080/api/";
+    var baseURL = "http://192.168.0.110:8080/api/";
 	
 $(document).ready(function(){
 
@@ -33,9 +33,9 @@ $(document).ready(function(){
 
 	$("#btn-login").click(function(){
 		if ($("#user").val() == ""){
-			bootbox.alert("Email não informado!");
+			bootbox.alert("Email nï¿½o informado!");
 		}else if($("#pass").val() == ""){
-			bootbox.alert("Senha não informada!", function(){ console.log('Informe o senha para continuar!'); });
+			bootbox.alert("Senha nï¿½o informada!", function(){ console.log('Informe o senha para continuar!'); });
 		}else{
 			
 			var passCript = CryptoJS.MD5($("#pass").val());
@@ -55,7 +55,7 @@ $(document).ready(function(){
 						}
 						$(window.document.location).attr('href',novaURL);
 					}else{
-						bootbox.alert("Usuário ou Senha incorretos.");
+						bootbox.alert("Usuï¿½rio ou Senha incorretos.");
 						
 					};
 					 

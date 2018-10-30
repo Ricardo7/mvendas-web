@@ -1,4 +1,4 @@
-﻿var baseUrl = "http://192.168.43.67:8080";
+﻿var baseUrl = "http://192.168.0.110:8080";
 var clienteId = 0;
 ready();
 

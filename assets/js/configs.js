@@ -75,7 +75,7 @@ function populaCamposTela(response) {
 
         $("#TempoMaxSemSinc").val(dados.TempoMaxSemSinc);
         $("#TempoEntreCadaSinc").val(dados.TempoEntreCadaSinc);
-        $("#PeriodoParaIndicadores").val(dados.TempoEntreCadaSinc);
+        $("#PeriodoParaIndicadores").val(dados.PeriodoParaIndicadores);
         $("#Id").val(dados.ID);
 
     }

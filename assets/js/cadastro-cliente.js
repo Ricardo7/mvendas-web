@@ -1,4 +1,4 @@
-﻿var baseUrl = "http://192.168.0.110:8080";
+﻿var urlBase = "http://192.168.15.12:8080";
 var clienteId = 0;
 ready();
 
@@ -27,20 +27,20 @@ function ready() {
     setaMascaraCampos();
 		
 	//Chama funções para buscar os Estados e popular na tela
-    myUrl = baseUrl+"/api/Locais/GetListaEstados?siglaPais="+"BR";
+    myUrl = urlBase+"/api/Locais/GetListaEstados?siglaPais="+"BR";
 	carregarDados(function (response){
 		populaCampoEstado(response);
 	}, myUrl);
 	
 	//Chama funções para buscar Cidades e popular na tela
-    myUrl = baseUrl+"/api/Locais/GetListaCidadesAtualizadas?dataAt="+"1900-01-01 00:00:00";
+    myUrl = urlBase+"/api/Locais/GetListaCidadesAtualizadas?dataAt="+"1900-01-01 00:00:00";
 	carregarDados(function (response){
 		populaCampoCidade(response);
     }, myUrl);
 
     //Se o ID estiver populado é porque o registro já existe e, neste caso, deve ser alterado.
     if (clienteId != "0") {
-        myUrl = baseUrl + "/api/Cliente/GetCliente?id="+clienteId;
+        myUrl = urlBase + "/api/Cliente/GetCliente?id="+clienteId;
         carregarDados(function (response) {
             populaCamposTela(response);
         }, myUrl);
@@ -401,7 +401,7 @@ function removeCaracteres(valor){
 }
 
 function buscaCidade(cidadeId){
-    var myUrl = baseUrl+"/api/Locais/GetCidade?id="+cidadeId;
+    var myUrl = urlBase+"/api/Locais/GetCidade?id="+cidadeId;
 	
 	carregarDados(function (response){
 		montaObjeto(response);
@@ -455,10 +455,10 @@ function montaObjeto(response) {
     
     if (clienteId == "0") {
         //Se cliente ainda não existe irá inserir
-        enviarDados(cliente, baseUrl + "/api/Cliente/AddCliente", "POST");
+        enviarDados(cliente, urlBase + "/api/Cliente/AddCliente", "POST");
     } else {
         //Se cliente já existe irá atualizar
-        enviarDados(cliente, baseUrl + "/api/Cliente/EditaCliente", "PUT");
+        enviarDados(cliente, urlBase + "/api/Cliente/EditaCliente", "PUT");
     }
 						
 }

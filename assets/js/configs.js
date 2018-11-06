@@ -1,4 +1,4 @@
-var baseUrl = "http://192.168.0.110:8080/api";
+var baseUrl = "http://192.168.15.12:8080/api";
 var usuarioId = 0;
 ready();
 

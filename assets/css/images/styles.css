@@ -1,0 +1,22 @@
+/* RESET STYLES */
+a{color:#65a42d;text-decoration:none;}
+a:hover{color:#65a42d; text-decoration:underline;}
+.portfolio-content, .portfolio-area{width:1080px;}
+
+
+/**** PORTFOLIO STYLES*****/
+.portfolio-categ{margin-bottom:30px;}
+.portfolio-categ li{display:inline;margin-right:5px;}
+.image-block{ display:block;position: relative;}
+.image-block img{border: 1px solid #65a42d; border-radius: 4px 4px 4px 4px;background:#FFFFFF;padding:10px;}
+    #image-principal {
+        border: 1px solid #65a42d;
+        border-radius: 4px 4px 4px 4px;
+        background: #b5f8b0;
+        padding: 10px;
+    }
+.image-block img:hover{border: 1px solid #A9CF54;box-shadow:0 0 5px #A9CF54;}
+.portfolio-area li{float: left;margin: 0 12px 20px 0;overflow: hidden;width: 245px;padding:5px;}
+.home-portfolio-text{margin-top:10px;}
+li.active a{ text-decoration:underline;}
+/**** END PORTFOLIO STYLES*****/

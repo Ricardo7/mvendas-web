@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
 	
 	limpaMenuAtivo();
@@ -7,8 +6,14 @@ $(document).ready(function () {
 		limpaMenuAtivo();
 		$("#menu-pedido").attr('class', 'active-menu');
 		$(".content").load('pedidos.html');
-	});
-	
+    });
+
+    $("#menu-imagens").click(function(){
+        limpaMenuAtivo();
+        $("#menu-imagens").attr('class', 'active-menu');
+        $(".content").load('imagens-produtos.html');
+    });
+
 	$("#menu-clientes").click(function(){
 		limpaMenuAtivo();
 		$("#menu-clientes").attr('class', 'active-menu');

@@ -1,4 +1,4 @@
-var urlBase = "http://192.168.15.12:8080/api";
+var urlBase = "http://192.168.15.3:8080/api";
 
 ready();
 
@@ -47,7 +47,14 @@ function ready() {
         $(".content").load("detalhes-pedido.html");
         $(".content").attr("id", id);
     });
-    
+
+    $("#dataTables-example").on("click", "[name=view-pedido]", function () {
+        var id = $(this).attr("id");
+
+        $(".content").load("detalhes-pedido.html");
+        $(".content").attr("id", id);
+    });
+
 	
 }
 
@@ -95,7 +102,8 @@ function populaDadosTela(response) {
         $.each(pedidos, function (index, data) {
             $.each(data.ItensPedido, function (index, data) { vlrTotal = vlrTotal + data.VlrTotal; });
 
-			dataSet.push([data.Numero,
+            dataSet.push([data.IDWS,
+                data.Numero,
                 data.Cliente.Cod+" - "+data.Cliente.RazaoSocial,
                 vlrTotal.toFixed(2),
                 data.Situacao,
@@ -105,18 +113,29 @@ function populaDadosTela(response) {
         
 		$('#dataTables-example').DataTable({
 		  data: dataSet,
-		  columns: [
-              {
-                  title: "Pedido",
-                  width: "10%",
-                  render: function (data, type, full) {
+            columns: [
+                {
+                    title: "",
+                    width: "2%",
+                    render: function (data, type, full) {
+
+                        var acoes;
+                        acoes = "<button type='button' name='view-pedido' class='btn btn-default btn-circle' id='"+data+"'><i class='fa fa-eye'></i></button>";
+                        //editar = "<a href='#' id='" + data + "' class='btn btn-primary'>Editar</a>";
+                        return acoes;
+                    }
+                },
+                {
+                    title: "Pedido",
+                    width: "8%",
+                    render: function (data, type, full) {
                       
-                      var acoes;
-                      acoes = "<a href='#' class='lnk-pedido' id='"+full[4]+"'>" + data + "</a >";
-                      //editar = "<a href='#' id='" + data + "' class='btn btn-primary'>Editar</a>";
-                      return acoes;
-                  }
-              },
+                        var acoes;
+                        acoes = "<a href='#' class='lnk-pedido' id='" + full[5] + "'>" + data + "</a >";
+                        //editar = "<a href='#' id='" + data + "' class='btn btn-primary'>Editar</a>";
+                        return acoes;
+                    }
+                },
             { title: "Cliente" },
             { title: "Valor" },
               {

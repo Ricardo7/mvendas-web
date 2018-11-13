@@ -1,7 +1,7 @@
 	//var token = $.cookie("token");
 	var token = getCookie("token");
 	var novaURL = "index.html";
-    var baseURL = "http://192.168.15.12:8080/api/";
+    var baseURL = "http://192.168.15.3:8080/api/";
 	
 $(document).ready(function(){
 

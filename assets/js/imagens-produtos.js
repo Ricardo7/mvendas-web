@@ -1,4 +1,4 @@
-var urlBase = "http://192.168.15.12:8080/api";
+var urlBase = "http://192.168.15.3:8080/api";
 
 
 ready();
@@ -22,6 +22,41 @@ function ready() {
     $("#list-image").on("click", ".portfolio-item2>div>.image-block>.img-remov", function () {
         var imagemID = $(this).attr("id");
         removerDados(imagemID);
+    });
+
+    $("#list-image").on("change", ".portfolio-item2>div>.image-block>.checkbox-inline>.img-principal", function () {
+        var imagemID = $(this).attr("id");
+        var existePrincipal = 0;
+        var continua = 0;
+        var id;
+
+        if ($(this).is(":checked")) { //Está marcando
+            //Verifica se já existe uma imagem principal
+            $("#list-image").find(".portfolio-item2>div>.image-block>.image-zoom>.image-principal").each(function () {
+                existePrincipal = 1;
+            });
+            if (existePrincipal == 1) {
+                continua = 0;
+                $(this).attr('checked', false);
+                bootbox.alert("Já existe uma imagem principal.");
+            } else {
+                continua = 1;
+                $("#list-image").find(".portfolio-item2>div>.image-block>.image-zoom>#" + imagemID).attr("class", "image-principal");
+            }
+        } else { //Está desmarcado
+            continua = 1;
+            $("#list-image").find(".portfolio-item2>div>.image-block>.image-zoom>.image-principal").removeAttr("class");
+        }
+
+        if (continua == 1) {
+            var principal=0;
+            if ($(this).is(":checked")) {
+                principal = 1;
+            } else {
+                principal = 0;
+            }
+            atualizaObjeto(imagemID,principal);
+        }
     });
 
     $("#sel-img").change(function () {
@@ -115,21 +150,25 @@ function populaImagens(response) {
             imgCount = imgCount + 1;
 
             if (data.Principal == 1) {
-                imgPrincipal = "id='image-principal'";
+                imgPrincipal = "class='image-principal'";
+                imgChecked = "checked";
             } else {
                 imgPrincipal = "";
-            }
+                imgChecked = "";
+;            }
 
             imagem += "";
             imagem += "<li class='portfolio-item2' data-id='id-"+data.IDWS+"' data-type='cat-item-4'>";
             imagem += "    <div>";
             imagem += "        <span class='image-block'>";
             imagem += "            <a class='image-zoom' href='assets/images/big/pic1.jpg' rel='prettyPhoto[gallery]' title='"+data.Nome+"'>";
-            imagem += "                <img " + imgPrincipal + " width='225' height='140' src='data:image/jpg;base64," + data.Base64 + "' alt=''" + data.Nome + "' title='" + data.Nome +"' />";
+            imagem += "                <img " + imgPrincipal + " id='" + data.IDWS + "' width='225' height='140' src='data:image/jpg;base64," + data.Base64 + "' alt=''" + data.Nome + "' title='" + data.Nome +"' />";
             imagem += "            </a>";
             imagem += "            <a class='img-remov' id='" + data.IDWS+"'>Deletar</a>";
+            imagem += "            <label class='checkbox-inline'><input type='checkbox' id='" + data.IDWS + "' class='img-principal' "+imgChecked+"/>Principal</label>";
             imagem += "        </span>";
             imagem += "     </div>";
+            imagem += "     <input type='hidden' id='" + data.IDWS + "' value='" + data.DtCriacao + "'>";
             imagem += "</li>";
 
         });
@@ -149,7 +188,7 @@ function montaObjeto() {
     var existePrincipal = 0;
 
     //Verifica se já existe uma imagem principal
-    $("#list-image").find(".portfolio-item2>div>.image-block>.image-zoom>#image-principal").each(function () {
+    $("#list-image").find(".portfolio-item2>div>.image-block>.image-zoom>.image-principal").each(function () {
         existePrincipal = 1;
     });
 
@@ -187,23 +226,54 @@ function montaObjeto() {
         imagem.DtAtualizacao = dataAtual;
 
 
-        enviarDados(imagem);
+        enviarDados(imagem, urlBase + "/Imagem/AddImagem","POST");
     }
 }
 
-function enviarDados(data) {
+function atualizaObjeto(imagemID,principal) {
+    var produtoID = $("#produto option:selected").attr("id");
+    var imgNome = $("#list-image").find(".portfolio-item2>div>.image-block>.image-zoom>#" + imagemID).attr("title");
+    var imgBase64 = $("#list-image").find(".portfolio-item2>div>.image-block>.image-zoom>#" + imagemID).attr("src");
+    var dataCadastro = $("#list-image").find(".portfolio-item2>#" + imagemID).attr("value");
+    imgBase64 = imgBase64.split(',')[1];
+    
+
+    var date = new Date();
+    // Formata a data e a hora (note o mês + 1)
+    var dataAtual = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
+
+    var imagem = new Object();
+    imagem.IDWS = imagemID;
+    imagem.Nome = imgNome;
+    imagem.Principal = principal;
+    imagem.ProdutoID = produtoID;
+    imagem.Base64 = imgBase64;
+    imagem.DtCriacao = dataCadastro;
+    imagem.DtAtualizacao = dataAtual;
+
+    enviarDados(imagem, urlBase + "/Imagem/EditaImagem", "PUT");
+}
+
+function enviarDados(dados, urlDest, metodo) {
+    var acao;
+    if (metodo == "POST") {
+        acao = "inserido";
+    } else {
+        acao = "atualizado";
+    }
 
     $.ajax({
-        type: "POST",
-        url: urlBase + "/Imagem/AddImagem",
-        data: JSON.stringify(data),
+        type: metodo,
+        url: urlDest,
+        data: JSON.stringify(dados),
         dataType: "json",
         contentType: "application/json",
         success: function (data) {
             //var response = $.parseJSON(data);
             //bootbox.alert(response.message);
             if (data.status == "SUCCESS") {
-                bootbox.alert("Imagem inserida com sucesso.");
+                bootbox.alert("Imagem " + acao + " com sucesso.");
                 atualizaImagens();
                 $("#fecha-modal").trigger("click");
                 //$(window.document.location).attr('href',novaURL);

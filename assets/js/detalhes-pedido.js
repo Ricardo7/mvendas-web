@@ -1,9 +1,11 @@
-﻿var urlBase = "http://192.168.15.3:8080/api";
+﻿var urlBase = getHost();
 var pedidoId = "0";
+var token;
 ready();
 
 function ready() {
 
+	token = getCookie("token");
     /*
     var qs = (function (a) {
         if (a == "") return {};
@@ -65,40 +67,6 @@ function ready() {
 
         $("#situacao").html("Aprovado");
     });
-	
-}
-
-function carregarDados(response,myUrl){
-	var retorno;
-	
-	$.ajax({
-		type: "GET",
-		url: myUrl,
-		//data: {conceitoId:1},
-		/*beforeSend: function(xhr){
-			xhr.setRequestHeader('X-Auth-Token', token);
-		},*/
-		success: function(data)
-		{
-			if (data != null){
-				//alert(JSON.stringify(data));
-				//retorno = $.parseJSON(data);
-				retorno = data;
-				if (retorno.status == "SUCCESS"){
-					response(retorno);  
-                } else {
-                    bootbox.alert("Status: " + JSON.stringify(retorno));
-				}
-			}else{
-                bootbox.alert("Status: " + JSON.stringify(retorno));
-			}
-			 
-		},
-		error: function (data, status, errorThrown) {
-			bootbox.alert("Erro: "+data.error);
-		}
-
-	});
 	
 }
 
@@ -206,6 +174,9 @@ function enviarDados(data) {
         data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json",
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('Authorization', token);
+		},
         success: function (data) {
             //var response = $.parseJSON(data);
             //bootbox.alert(response.message);

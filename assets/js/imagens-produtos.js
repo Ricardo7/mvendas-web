@@ -1,6 +1,4 @@
-var urlBase = "http://192.168.15.3:8080/api";
-
-
+var urlBase = getHost();
 ready();
 
 function ready() {
@@ -87,40 +85,6 @@ function atualizaImagens() {
     carregarDados(function (response) {
         populaImagens(response);
     }, myUrl);
-}
-
-function carregarDados(response, myurl){
-	var retorno;
-	
-	$.ajax({
-		type: "GET",
-        url: myurl,
-		//data: {conceitoId:1},
-		/*beforeSend: function(xhr){
-			xhr.setRequestHeader('X-Auth-Token', token);
-		},*/
-		success: function(data)
-		{
-			if (data != null){
-				//alert(JSON.stringify(data));
-				//retorno = $.parseJSON(data);
-				retorno = data;
-				if (retorno.status == "SUCCESS"){
-					response(retorno);   
-				}else{
-					bootbox.alert("Status: "+retorno.message);
-				}
-			}else{
-				bootbox.alert("Status: "+retorno.message);
-			}
-			 
-		},
-		error: function (data, status, errorThrown) {
-			bootbox.alert("Erro: "+data.error);
-		}
-
-	});
-	
 }
 
 function populaCampoProduto(response) {
@@ -269,6 +233,9 @@ function enviarDados(dados, urlDest, metodo) {
         data: JSON.stringify(dados),
         dataType: "json",
         contentType: "application/json",
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('Authorization', token);
+		},
         success: function (data) {
             //var response = $.parseJSON(data);
             //bootbox.alert(response.message);
@@ -292,6 +259,9 @@ function removerDados(id) {
     $.ajax({
         type: "DELETE",
         url: urlBase + "/Imagem/RemoveImagem?id="+id,
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('Authorization', token);
+		},
         success: function (data) {
             //var response = $.parseJSON(data);
             //bootbox.alert(response.message);

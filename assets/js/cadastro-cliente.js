@@ -1,10 +1,11 @@
-﻿var urlBase = "http://192.168.15.3:8080";
+﻿var urlBase = getHost();
 var clienteId = 0;
+var token;
 ready();
 
 //$(document).ready(function(){
 function ready() {
-
+	token = getCookie("token");
     /*
     var qs = (function (a) {
         if (a == "") return {};
@@ -27,20 +28,21 @@ function ready() {
     setaMascaraCampos();
 		
 	//Chama funções para buscar os Estados e popular na tela
-    myUrl = urlBase+"/api/Locais/GetListaEstados?siglaPais="+"BR";
+    myUrl = urlBase+"/Locais/GetListaEstados?siglaPais="+"BR";
+
 	carregarDados(function (response){
 		populaCampoEstado(response);
 	}, myUrl);
 	
 	//Chama funções para buscar Cidades e popular na tela
-    myUrl = urlBase+"/api/Locais/GetListaCidadesAtualizadas?dataAt="+"1900-01-01 00:00:00";
+    myUrl = urlBase+"/Locais/GetListaCidadesAtualizadas?dataAt="+"1900-01-01 00:00:00";
 	carregarDados(function (response){
 		populaCampoCidade(response);
     }, myUrl);
 
     //Se o ID estiver populado é porque o registro já existe e, neste caso, deve ser alterado.
     if (clienteId != "0") {
-        myUrl = urlBase + "/api/Cliente/GetCliente?id="+clienteId;
+        myUrl = urlBase + "/Cliente/GetCliente?id="+clienteId;
         carregarDados(function (response) {
             populaCamposTela(response);
         }, myUrl);
@@ -70,41 +72,6 @@ function ready() {
 	
 }
 //});
-
-function carregarDados(response,myUrl){
-	var retorno;
-	
-	$.ajax({
-		type: "GET",
-		url: myUrl,
-		//data: {conceitoId:1},
-		/*beforeSend: function(xhr){
-			xhr.setRequestHeader('X-Auth-Token', token);
-		},*/
-		success: function(data)
-		{
-			if (data != null){
-				//alert(JSON.stringify(data));
-				//retorno = $.parseJSON(data);
-				retorno = data;
-				if (retorno.status == "SUCCESS"){
-					response(retorno);  
-				}else{
-					bootbox.alert("Status: "+retorno.message);
-				}
-			}else{
-				bootbox.alert("Status: "+retorno.message);
-			}
-			 
-		},
-		error: function (data, status, errorThrown) {
-			bootbox.alert("Erro: "+data.error);
-		}
-
-	});
-	
-}
-
 
 function populaCampoEstado(response){
 	if (response != null){
@@ -401,7 +368,7 @@ function removeCaracteres(valor){
 }
 
 function buscaCidade(cidadeId){
-    var myUrl = urlBase+"/api/Locais/GetCidade?id="+cidadeId;
+    var myUrl = urlBase+"/Locais/GetCidade?id="+cidadeId;
 	
 	carregarDados(function (response){
 		montaObjeto(response);
@@ -455,10 +422,10 @@ function montaObjeto(response) {
     
     if (clienteId == "0") {
         //Se cliente ainda não existe irá inserir
-        enviarDados(cliente, urlBase + "/api/Cliente/AddCliente", "POST");
+        enviarDados(cliente, urlBase + "/Cliente/AddCliente", "POST");
     } else {
         //Se cliente já existe irá atualizar
-        enviarDados(cliente, urlBase + "/api/Cliente/EditaCliente", "PUT");
+        enviarDados(cliente, urlBase + "/Cliente/EditaCliente", "PUT");
     }
 						
 }
@@ -477,6 +444,9 @@ function enviarDados(dados,urlDest,metodo){
         data: JSON.stringify(dados),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('Authorization', token);
+		},
 		success: function(data)
 		{
 			//var response = $.parseJSON(data);

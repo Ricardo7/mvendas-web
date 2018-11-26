@@ -1,4 +1,4 @@
-var baseUrl = "http://192.168.15.3:8080/api";
+var baseUrl = getHost();
 var usuarioId = 0;
 ready();
 
@@ -33,39 +33,6 @@ function ready() {
 
 }
 //});
-
-function carregarDados(response, myUrl) {
-    var retorno;
-
-    $.ajax({
-        type: "GET",
-        url: myUrl,
-        //data: {conceitoId:1},
-		/*beforeSend: function(xhr){
-			xhr.setRequestHeader('X-Auth-Token', token);
-		},*/
-        success: function (data) {
-            if (data != null) {
-                //alert(JSON.stringify(data));
-                //retorno = $.parseJSON(data);
-                retorno = data;
-                if (retorno.status == "SUCCESS") {
-                    response(retorno);
-                } else {
-                    bootbox.alert("Status: " + retorno.message);
-                }
-            } else {
-                bootbox.alert("Status: " + retorno.message);
-            }
-
-        },
-        error: function (data, status, errorThrown) {
-            bootbox.alert("Erro: " + data.error);
-        }
-
-    });
-
-}
 
 function populaCamposTela(response) {
     if (response != null) {
@@ -115,23 +82,34 @@ function validaCampos() {
 
 function montaObjeto() {
 
+	var configID = $("#Id").val().toString();
     var configs = new Object();
 
+	
     configs.TempoMaxSemSinc = $("#TempoMaxSemSinc").val().toString();
     configs.TempoEntreCadaSinc = $("#TempoEntreCadaSinc").val().toString();
     configs.PeriodoParaIndicadores = $("#PeriodoParaIndicadores").val().toString();
-    configs.ID = $("#Id").val().toString();
+    configs.ID = configID;
 
-    //Se Usuário já existe irá atualizar
-    enviarDados(configs, baseUrl + "/Configuracoes/EditaConfiguracoes", "PUT");
 
+	    if (configID == null || configID == "") {
+			configs.ID
+			//Se Configuração ainda não existe irá inserir
+			enviarDados(configs, baseUrl + "/Configuracoes/AddConfiguracoes", "POST");
+		} else {
+			//Se Configuração já existe irá atualizar
+			enviarDados(configs, baseUrl + "/Configuracoes/EditaConfiguracoes", "PUT");
+		}
 }
 
 function enviarDados(dados, url, metodo) {
     var acao;
-    acao = "atualizado";
-
-
+	if(metodo == "POST"){
+		acao = "inserida";
+	}else{
+		acao = "atualizada";
+	}
+	
     $.ajax({
         type: metodo,
         url: url,
@@ -142,7 +120,7 @@ function enviarDados(dados, url, metodo) {
             //var response = $.parseJSON(data);
             //bootbox.alert(response.message);
             if (data.status == "SUCCESS") {
-                bootbox.alert("Usuário " + acao + " com sucesso.");
+                bootbox.alert("Configuração " + acao + " com sucesso.");
                 $(".content").load('configs.html');
                 //$(window.document.location).attr('href',novaURL);
             }

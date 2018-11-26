@@ -1,10 +1,11 @@
-var baseUrl = "http://192.168.15.3:8080/api";
+var baseUrl = getHost();
 var usuarioId = 0;
+var token;
 ready();
 
 //$(document).ready(function(){
 function ready() {
-
+	token = getCookie("token");
     usuarioId = $(".content").attr("id");
 
     //Se o ID estiver populado é porque o registro já existe e, neste caso, deve ser alterado.
@@ -35,40 +36,6 @@ function ready() {
 }
 //});
 
-function carregarDados(response,myUrl){
-	var retorno;
-	
-	$.ajax({
-		type: "GET",
-		url: myUrl,
-		//data: {conceitoId:1},
-		/*beforeSend: function(xhr){
-			xhr.setRequestHeader('X-Auth-Token', token);
-		},*/
-		success: function(data)
-		{
-			if (data != null){
-				//alert(JSON.stringify(data));
-				//retorno = $.parseJSON(data);
-				retorno = data;
-				if (retorno.status == "SUCCESS"){
-					response(retorno);  
-				}else{
-					bootbox.alert("Status: "+retorno.message);
-				}
-			}else{
-				bootbox.alert("Status: "+retorno.message);
-			}
-			 
-		},
-		error: function (data, status, errorThrown) {
-			bootbox.alert("Erro: "+data.error);
-		}
-
-	});
-	
-}
-
 function populaCamposTela(response) {
     if (response != null) {
 
@@ -79,7 +46,8 @@ function populaCamposTela(response) {
         } else {
             $("#ativo").prop("checked", false);
         }
-
+		
+		$("#tipo").val(dados.Tipo);
         $("#nome").val(dados.Nome);
         $("#email").val(dados.Email);
         $("#senha").val();
@@ -91,7 +59,10 @@ function populaCamposTela(response) {
 
 function validaCampos(){
 	
-	if ($("#nome").val() == ""){
+	if ($("#tipo option:selected").val() == ""){
+		$("#tipo").parent().attr("class", "form-group has-error"); 
+		bootbox.alert("O campo Tipo deve ser selecionado!");
+	}else if ($("#nome").val() == ""){
 		$("#nome").parent().attr("class", "form-group has-error"); 
 		bootbox.alert("O campo Nome deve ser informado!");
 	}else if($("#email").val() == ""){
@@ -123,6 +94,7 @@ function validaEmail(email){
 
 function limpaFormatacaoErroCampos(){
 
+	$("#tipo").parent().attr("class", "form-group"); 
 	$("#nome").parent().attr("class", "form-group");
 	$("#email").parent().attr("class", "form-group");
 	$("#senha").parent().attr("class", "form-group"); 
@@ -142,7 +114,7 @@ function montaObjeto(){
 	}else{
 		ativo = 0;
 	}
-				
+
 	var data = new Date();
 	// Formata a data e a hora (note o mês + 1)
 	var dataAtual = data.getFullYear() + '-' + (data.getMonth()+1) + '-' + data.getDate() +' '+ data.getHours() + ':' + data.getMinutes() + ':' + data.getSeconds();
@@ -151,18 +123,18 @@ function montaObjeto(){
 
     if (usuarioId != "0") {
         usuario.IDWS = usuarioId;
-        usuario.DtCadastro = $("#dtCadastro").val();
+        //usuario.DtCadastro = $("#dtCadastro").val();
     } else {
         usuario.IDWS = "0";
-        usuario.DtCadastro = dataAtual;
+        //usuario.DtCadastro = dataAtual;
     }
 
-	usuario.IDAP = 0;
 	usuario.Nome = $("#nome").val().toString();
 	usuario.Email = $("#email").val().toString();
-    usuario.Senha = senhaCript;
+    usuario.Senha = ""+senhaCript+"";
 	usuario.Ativo = ativo;
-	usuario.DtAtualizacao = dataAtual;
+	//usuario.DtAtualizacao = dataAtual;
+	usuario.Tipo = $("#tipo option:selected").val();
 
     if (usuarioId == "0") {
         //Se Usuário ainda não existe irá inserir
@@ -188,6 +160,9 @@ function enviarDados(dados,url,metodo){
         data: JSON.stringify(dados),
         dataType: "json",
         contentType: "application/json",
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('Authorization', token);
+		},
 		success: function( data)
 		{
 			//var response = $.parseJSON(data);

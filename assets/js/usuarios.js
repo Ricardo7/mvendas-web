@@ -1,15 +1,15 @@
-var urlBase = "http://192.168.15.3:8080/api";
+var urlBase = getHost();
 
 ready();
 
 function ready(){
-	
 	//token = getCookie("token");
 	
+	var myURL = urlBase+"/Usuario/ListaUsuarios";
 	//Popula todos os mapas na tela
 	carregarDados(function (response){
 		populaUsuariosTela(response);
-	});
+	},myURL);
 
     $("#usuarios-btn-novo").click(function () {
         $(".content").load('cadastro-usuario.html');
@@ -24,39 +24,6 @@ function ready(){
 	
 }
 
-function carregarDados(response){
-	var retorno;
-	
-	$.ajax({
-		type: "GET",
-        url: urlBase+"/Usuario/ListaUsuarios",
-		//data: {conceitoId:1},
-		/*beforeSend: function(xhr){
-			xhr.setRequestHeader('X-Auth-Token', token);
-		},*/
-		success: function(data)
-		{
-			if (data != null){
-				//alert(JSON.stringify(data));
-				//retorno = $.parseJSON(data);
-				retorno = data;
-				if (retorno.status == "SUCCESS"){
-					response(retorno);   
-				}else{
-					bootbox.alert("Status: "+retorno.message);
-				}
-			}else{
-				bootbox.alert("Status: "+retorno.message);
-			}
-			 
-		},
-		error: function (data, status, errorThrown) {
-			bootbox.alert("Erro: "+data.error);
-		}
-
-	});
-	
-}
 
 function populaUsuariosTela(response){
 	if (response != null){
@@ -67,6 +34,7 @@ function populaUsuariosTela(response){
 			dataSet.push([data.Nome,
                           data.Email,
                           data.Ativo,
+						  data.Tipo,
                           data.IDWS
 						]);
 		});
@@ -82,6 +50,16 @@ function populaUsuariosTela(response){
 						return "Inativo";
 					}else{
 						return "Ativo";
+					}
+					
+				}
+              },
+			  { title: 'Tipo',
+				render: function(data, type, full) {
+					if (data == "0") {
+						return "Vendedor";
+					}else if(data == "1"){
+						return "Administrador";
 					}
 					
 				}

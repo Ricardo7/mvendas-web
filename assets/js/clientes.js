@@ -1,23 +1,21 @@
-var token;
-var urlBase = "http://192.168.15.3:8080/api";
+var urlBase = getHost();
+var usuarioID;
 
 ready();
 
 function ready() {
-
-    //$(document).ready(function () {
-
-    //token = getCookie("token");
-
-
+    usuarioID = getCookie("usuarioID");
+ 
     //$('#dataTables-example').dataTable();
     $(".tab-clientes-cnpj").mask("99.999.999/9999-99");
     $(".tab-clientes-fone").mask("(99)99999-9999");
 
+	var myURL = urlBase + "/Cliente/GetListaClientes?usuarioID=" + usuarioID+"&origem=1";
+	
     //Popula todos os campos na tela
     carregarDados(function (response) {
         populaClientesTela(response);
-    });
+    },myURL);
 
     $("#clientes-btn-novo").click(function () {
         $(".content").load('cadastro-cliente.html');
@@ -29,39 +27,6 @@ function ready() {
         var id = $(this).attr("id");
         $(".content").attr("id",id);
     });
-}
-
-function carregarDados(response) {
-    var retorno;
-
-    $.ajax({
-        type: "GET",
-        url: urlBase + "/Cliente/GetListaClientes",
-        //data: {conceitoId:1},
-		/*beforeSend: function(xhr){
-			xhr.setRequestHeader('X-Auth-Token', token);
-		},*/
-        success: function (data) {
-            if (data != null) {
-                //alert(JSON.stringify(data));
-                //retorno = $.parseJSON(data);
-                retorno = data;
-                if (retorno.status == "SUCCESS") {
-                    response(retorno);
-                } else {
-                    bootbox.alert("Status: " + retorno.message);
-                }
-            } else {
-                bootbox.alert("Status: " + retorno.message);
-            }
-
-        },
-        error: function (data, status, errorThrown) {
-            bootbox.alert("Erro: " + data.error);
-        }
-
-    });
-
 }
 
 function populaClientesTela(response) {

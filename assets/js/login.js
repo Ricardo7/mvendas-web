@@ -1,7 +1,8 @@
 	//var token = $.cookie("token");
 	var token = getCookie("token");
+    var usuarioID = getCookie("usuarioID");
 	var novaURL = "index.html";
-    var baseURL = "http://192.168.15.3:8080/api/";
+    var baseURL = "http://192.168.15.4:8080/api/";
 	
 $(document).ready(function(){
 
@@ -26,6 +27,7 @@ $(document).ready(function(){
 			},
 			error: function (ex) {
 				deleteCookie("token");
+                deleteCookie("usuarioID");
 			}
 		
 		});
@@ -33,9 +35,9 @@ $(document).ready(function(){
 
 	$("#btn-login").click(function(){
 		if ($("#user").val() == ""){
-			bootbox.alert("Email n�o informado!");
+			bootbox.alert("Email não informado!");
 		}else if($("#pass").val() == ""){
-			bootbox.alert("Senha n�o informada!", function(){ console.log('Informe o senha para continuar!'); });
+			bootbox.alert("Senha não informada!", function(){ console.log('Informe o senha para continuar!'); });
 		}else{
 			
 			var passCript = CryptoJS.MD5($("#pass").val());
@@ -51,17 +53,19 @@ $(document).ready(function(){
 						if ($("#mantem").is(':checked')){
 							//$.cookie("token",response.data.token);
 							
-							setCookie("token",response.data.token);
+							setCookie("token",response.data.Token);
+                            setCookie("usuarioID",response.data.IDWS);
 						}
 						$(window.document.location).attr('href',novaURL);
 					}else{
-						bootbox.alert("Usu�rio ou Senha incorretos.");
+						bootbox.alert("Usuário ou Senha incorretos.");
 						
-					};
+					}
 					 
 				},
 				error: function (data, status, errorThrown) {
 					deleteCookie("token");
+                    deleteCookie("usuarioID");
 					console.log(data);
 					console.log(errorThrown);
 					bootbox.alert(data["message"]);

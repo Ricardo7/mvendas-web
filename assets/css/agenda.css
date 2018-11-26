@@ -1,0 +1,9 @@
+.map{
+    height: 350px;
+    width: 100%;
+       
+}
+#atividades {
+    height:350px;
+    overflow-y: scroll;
+}

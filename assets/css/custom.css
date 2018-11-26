@@ -38,7 +38,7 @@ body {
     margin:10px 20px 10px 0px;
     background-color:#fff!important;
     padding:10px;
-    min-height:1200px;
+    min-height:600px;
 }
 
 .text-center {
@@ -214,9 +214,9 @@ max-width:170px;
 .navbar-cls-top .navbar-brand {
 	color: #fff;
 background: #183919;
-width: 260px;
+width: 240px;
 text-align: center;
-height: 60px;
+height: 50px;
 font-size: 30px;
 font-weight: 700;
 }
@@ -369,9 +369,9 @@ background-color: #FFF;
  
  @media(min-width:768px) {
      #page-wrapper{
-               margin: 0 0 0 260px;
-        padding: 15px 30px;
-        min-height: 1200px;
+        margin: 0 0 0 240px;
+        padding: 5px 15px;
+        min-height: 600px;
 		
     }
 	
@@ -379,7 +379,7 @@ background-color: #FFF;
     .navbar-side {
         z-index: 1;
         position: absolute;
-        width: 260px;
+        width: 240px;
     }
 
    .navbar {

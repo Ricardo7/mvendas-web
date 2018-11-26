@@ -1,9 +1,11 @@
-var urlBase = "http://192.168.15.3:8080/api";
-
+var urlBase = getHost();
+var usuarioID;
+var token;
 ready();
 
 function ready() {
-
+    usuarioID = getCookie("usuarioID");
+	token = getCookie("token");
     $(".content").attr("id", "0");
 	
 	//token = getCookie("token");
@@ -11,7 +13,7 @@ function ready() {
 	//Popula todos os mapas na tela
 	carregarDados(function (response){
 		populaDadosTela(response);
-    }, urlBase + "/Pedido/GetListaPedidos");
+    }, urlBase + "/Pedido/GetListaPedidos?usuarioID=" + usuarioID+"&origem=1");
 
     $("#dataTables-example").on("click", ".btn-cancel", function () {
         var id = $(this).attr("id");
@@ -55,40 +57,6 @@ function ready() {
         $(".content").attr("id", id);
     });
 
-	
-}
-
-function carregarDados(response, myUrl){
-	var retorno;
-
-	$.ajax({
-		type: "GET",
-        url: myUrl,
-		//data: {conceitoId:1},
-		/*beforeSend: function(xhr){
-			xhr.setRequestHeader('X-Auth-Token', token);
-		},*/
-		success: function(data)
-		{
-			if (data != null){
-				//alert(JSON.stringify(data));
-				//retorno = $.parseJSON(data);
-				retorno = data;
-				if (retorno.status == "SUCCESS"){
-					response(retorno);   
-				}else{
-					bootbox.alert("Status: "+retorno.message);
-				}
-			}else{
-				bootbox.alert("Status: "+retorno.message);
-			}
-			 
-		},
-		error: function (data, status, errorThrown) {
-			bootbox.alert("Erro GET: "+JSON.stringify(data));
-		}
-
-	});
 	
 }
 
@@ -213,6 +181,9 @@ function enviarDados(data) {
         data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json",
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('Authorization', token);
+		},
         success: function (data) {
             //var response = $.parseJSON(data);
             //bootbox.alert(response.message);

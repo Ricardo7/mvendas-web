@@ -63,6 +63,8 @@ function limpaMenuAtivo(){
 
 function validaUsuarioAutenticado() {
     token = getCookie("token");
+	usuarioID = getCookie("usuarioID");
+	
     novaURL = "login.html";
     
     if (token != null) {

@@ -29,25 +29,48 @@ function ready() {
 		
 	//Chama funções para buscar os Estados e popular na tela
     myUrl = urlBase+"/Locais/GetListaEstados?siglaPais="+"BR";
-
 	carregarDados(function (response){
 		populaCampoEstado(response);
 	}, myUrl);
+	
+	//Chama funções para buscar os Segmentos de mercado e popular na tela
+	myUrl = urlBase+"/SegmentoMercado/GetListaSegmentosMercado";
+	carregarDados(function (response){
+		populaCampoSegMerdado(response);
+    }, myUrl);
+	
+	//Chama funções para buscar os Usuários e popular na tela
+	myUrl = urlBase+"/Usuario/ListaUsuarios";
+	carregarDados(function (response){
+		populaCampoUsuario(response);
+    }, myUrl);
 	
 	//Chama funções para buscar Cidades e popular na tela
     myUrl = urlBase+"/Locais/GetListaCidadesAtualizadas?dataAt="+"1900-01-01 00:00:00";
 	carregarDados(function (response){
 		populaCampoCidade(response);
     }, myUrl);
-
-    //Se o ID estiver populado é porque o registro já existe e, neste caso, deve ser alterado.
-    if (clienteId != "0") {
-        myUrl = urlBase + "/Cliente/GetCliente?id="+clienteId;
-        carregarDados(function (response) {
-            populaCamposTela(response);
-        }, myUrl);
-    }
-    
+	
+	//Se o ID estiver populado é porque o registro já existe e, neste caso, deve ser alterado.
+	if (clienteId != "0") {
+		
+		var controle = 3;
+		//Laço para repetir e aguardar até que o campo Usuário esteja populado. 
+		// A variável 'controle' serve para que o laço não execute mais de 3 vezes(3 segundos).
+		do{
+			
+			sleep(1000);
+			controle --;
+		}while($("#usuario").val() == "" && controle > 0);
+			
+		myUrl = urlBase + "/Cliente/GetCliente?id="+clienteId;
+		carregarDados(function (response) {
+			populaCamposTela(response);
+		}, myUrl);
+	
+			
+	}
+		
     $("#btn-voltar").click(function () {
         $(".content").attr("id", "0");
         $(".content").load('clientes.html');
@@ -60,7 +83,7 @@ function ready() {
 		if (validaCampos()){
 			
 			//Chama o método para buscar a cidade e em seguida enviar o objeto Cliente ao servidor
-			buscaCidade($("#cidade option:selected").attr("id"));
+			buscaCidade();
 
 		}
 	});
@@ -72,6 +95,32 @@ function ready() {
 	
 }
 //});
+
+function populaCampoSegMerdado(response){
+	if (response != null){
+		var dados = response.data;
+		var option = '<option>Selecione</option>';
+		
+		$.each(dados, function(index,data){
+			
+            option += '<option id="'+data.IDWS+'" value="'+data.Descricao+'">'+data.Descricao+'</option>';
+		});
+		$("#seg-mercado").html(option).show();
+	}
+}
+
+function populaCampoUsuario(response){
+	if (response != null){
+		var dados = response.data;
+		var option = '<option>Selecione</option>';
+		
+		$.each(dados, function(index,data){
+			
+            option += '<option id="'+data.IDWS+'" value="'+data.Nome+'">'+data.Nome+'</option>';
+		});
+		$("#usuario").html(option).show();
+	}
+}
 
 function populaCampoEstado(response){
 	if (response != null){
@@ -110,7 +159,8 @@ function populaCamposTela(response) {
             $("#ativo").prop("checked", false);
         }
 
-        $("#cod").val(dados.Cod);
+		$("#seg-mercado").val(dados.SegmentoMercado.Descricao);		
+		$("#cod").val(dados.Cod);
         $("#raz-social").val(dados.RazaoSocial);
         $("#nome-fantasia").val(dados.NomeFantasia);
         $("#cnpj").val(dados.Cnpj);
@@ -123,6 +173,7 @@ function populaCamposTela(response) {
         $("#bairro").val(dados.Bairro);
         $("#logradouro").val(dados.Logradouro);
         $("#numero").val(dados.Numero);
+		$("#usuario").val(dados.Usuario.Nome);
         $("#dtCadastro").val(dados.DtCadastro);
 
 
@@ -131,7 +182,10 @@ function populaCamposTela(response) {
 
 function validaCampos(){
 	
-	if ($("#cod").val() == ""){
+	if($("#seg-mercado").val() == ""){
+		$("#seg-mercado").parent().attr("class", "form-group has-error"); 
+		bootbox.alert("O campo Segmento de Mercado deve ser informado!");
+	}else if ($("#cod").val() == ""){
 		$("#cod").parent().attr("class", "form-group has-error"); 
 		bootbox.alert("O campo Código deve ser informado!");
 	}else if ($("#raz-social").val() == ""){
@@ -176,6 +230,9 @@ function validaCampos(){
 	}else if($("#numero").val() == ""){
 		$("#numero").parent().attr("class", "form-group has-error"); 
 		bootbox.alert("O campo Número deve ser informado!");
+	}else if($("#usuario").val() == ""){
+		$("#usuario").parent().attr("class", "form-group has-error"); 
+		bootbox.alert("O campo Usuario deve ser informado!");
 	}else{
 		return true;
 	}
@@ -288,6 +345,7 @@ function validaCep(cep){
 
 function limpaFormatacaoErroCampos(){
 
+	$("#seg-mercado").parent().attr("class", "form-group"); 
 	$("#cod").parent().attr("class", "form-group");
 	$("#raz-social").parent().attr("class", "form-group");
 	$("#cnpj").parent().attr("class", "form-group"); 
@@ -300,6 +358,7 @@ function limpaFormatacaoErroCampos(){
 	$("#cidade").parent().attr("class", "form-group"); 
 	$("#bairro").parent().attr("class", "form-group"); 
 	$("#logradouro").parent().attr("class", "form-group"); 
+	$("#usuario").parent().attr("class", "form-group"); 
 }
 
 function limpaFormularioCep(){
@@ -367,18 +426,72 @@ function removeCaracteres(valor){
 	return valor.replace(/[^\d]+/g,'');
 }
 
-function buscaCidade(cidadeId){
+/**
+ * Busca o objeto cidade e retorna no call-back para a função que irá chamar o Usuário.
+ * Cada objeto será chamado sempre no call-back do objeto atual e assim, irá montar todo o objeto cliente, 
+ *  que posteriormente será inserido ou atualizado.
+ */
+function buscaCidade(){
+	var cidadeId = $("#cidade option:selected").attr("id");
     var myUrl = urlBase+"/Locais/GetCidade?id="+cidadeId;
 	
 	carregarDados(function (response){
-		montaObjeto(response);
+		buscaUsuario(response);
+	}, myUrl);
+	
+	
+}
+
+/**
+ * Monta a Cidade no objeto cliente e chama o Usuário
+ * 
+ */
+function buscaUsuario(response){
+	var cliente = new Object();
+	var cidade = new Object();
+	cidade = response.data;
+	cliente.Cidade = cidade;
+	
+	var usuarioId = $("#usuario option:selected").attr("id");
+			
+	var myUrl = urlBase+"/Usuario/GetUsuarioID?ID="+usuarioId;
+	carregarDados(function (response){
+		buscaSegMercado(response, cliente);
 	}, myUrl);
 	
 }
 
-function montaObjeto(response) {
-    var cidade = new Object();
-	cidade = response.data;
+/**
+ * Monta o Usuário no objeto cliente e chama o Segmento de Mercado
+ * 
+ */
+ function buscaSegMercado(response, cliente){
+	var usuario = new Object();
+	usuario = response.data;
+	//Limpa campos do usuário
+	usuario.Email = null;
+	usuario.Senha = null;
+	usuario.Token = null;
+	
+	cliente.Usuario = usuario;
+	
+	var segMercadoId = $("#seg-mercado option:selected").attr("id");
+		
+	var myUrl = urlBase+"/SegmentoMercado/GetSegmentoMercado?id="+segMercadoId;
+	carregarDados(function (response){
+		montaObjeto(response, cliente);
+	}, myUrl);
+	
+}
+
+/**
+ * Monta o Segmento de Mercado no objeto cliente, bem como os demais campos do mesmo. 
+ *  Em seguida passa a requisição para inserir ou atualizar o objetocliente.
+ */ 
+function montaObjeto(response, cliente) {
+    var segmentoMercado = new Object();
+	segmentoMercado = response.data;
+	cliente.SegmentoMercado = segmentoMercado;
     
 	var ativo;
 	
@@ -392,7 +505,6 @@ function montaObjeto(response) {
 	// Formata a data e a hora (note o mês + 1)
     var dataAtual = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 	
-    var cliente = new Object();
 
     if (clienteId != "0") {
         cliente.IDWS = clienteId;
@@ -417,9 +529,7 @@ function montaObjeto(response) {
 	cliente.Status = 1;
 	cliente.Ativo = ativo;
     cliente.DtAtualizacao = dataAtual;
-    cliente.Cidade = cidade;
-    cliente.SegmentoMercado = null;
-    
+        
     if (clienteId == "0") {
         //Se cliente ainda não existe irá inserir
         enviarDados(cliente, urlBase + "/Cliente/AddCliente", "POST");
@@ -463,4 +573,13 @@ function enviarDados(dados,urlDest,metodo){
         }
 	});
 	
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }
